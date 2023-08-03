@@ -43,7 +43,7 @@ body {
 	color: #666f73;
 }
 .wrapper {
-	height: 100%;
+	/* height: 100%; */
 	position: relative;
 	/*overflow-x: hidden;
 	overflow-y: auto*/
@@ -757,11 +757,12 @@ ul.fa-ul{
 	position: absolute;
 	top: 0;
 	left: 0;
+	color:black;
 	padding-top: 60px;
 	min-height: 100%;
 	width: 230px;
-	background: #2f3742;
-	z-index: 810;
+	background: #fff;
+	z-index: 8108;
 	-webkit-transition: -webkit-transform .3s ease-in-out, width .3s ease-in-out;
 	-moz-transition: -moz-transform .3s ease-in-out, width .3s ease-in-out;
 	-o-transition: -o-transform .3s ease-in-out, width .3s ease-in-out;

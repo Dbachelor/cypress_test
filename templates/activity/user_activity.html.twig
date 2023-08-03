@@ -1,10 +1,9 @@
 {% extends 'base_activity.html.twig' %}
 
 {% block body %}
-      <div class="content-wrapper"> 
+     
      <h2>Activities for {{ name }}</h2>
-    <div class="content-header sty-one">
-    <div class="container" style="position:absolute; top:20px">
+   
     <div class='row'>
     {% for item in user_activities %}
         <div class='col-lg-3' style="height:280px; border:1px solid lightgrey; overflow:auto; border-radius:5px; margin-left:10px; padding:5px; width:350px; margin-top:20px">
@@ -30,7 +29,6 @@
     {% endfor %}
     </div> 
     </div>
-    </div>
-    </div>
-    </div>
+   
+  
 {% endblock %}

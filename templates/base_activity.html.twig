@@ -80,13 +80,13 @@
     <link rel=stylesheet href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css">
 
 </head>
-<body class="hold-transition skin-blue sidebar-mini" style="background-color:white">
-<div class="wrapper boxed-wrapper">
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper boxed-wrapper" style="height:40px">
   <header class="main-header"> 
     <!-- Logo --> 
     <a href="{{path('app_users')}}" class="logo blue-bg"> 
 
-    <span><b style='font-family:san-serif; font-weight:800; font-size:20px' class='text-white'>Case Manager</b> &nbsp <i class="fa fa-briefcase text-white" aria-hidden="true"></i></span>
+    <span><b style='font-family:san-serif; font-weight:800; font-size:20px' class='text-white'>Activity Manager</b> &nbsp <i class="fa fa-briefcase text-white" aria-hidden="true"></i></span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar blue-bg navbar-static-top"> 
@@ -147,7 +147,7 @@
       </div>
     </nav>
   </header>
-</body>
+
 </div>
 <style>
     ul.treeview-menu li{
@@ -156,7 +156,7 @@
     }
 </style>
 <!-- Left side column. contains the logo and sidebar -->
-  <aside class="main-sidebar bg-light" style='height:100%'> 
+  <aside class="main-sidebar bg-light" style='height:100%; background-color:white; color:black'> 
     <!-- sidebar: style can be found in sidebar.less -->
     <div class="sidebar"> 
       <!-- Sidebar user panel -->
@@ -175,18 +175,22 @@
         <li><a href="{{ path('list_activity') }}"><i class='fa fa-columns'></i>Activities</a></li>
         {# <li><a href="{{ path('list_users_activities') }}"><i class='fa fa-columns'></i>Users Activities</a></li> #}
         <li><a href="{{ path('app_activity') }}"><i class='fa fa-columns'></i>Create Activity</a></li>
+        <li><a href="{{ path('app_logout') }}"><i class='fa fa-exit'></i>Logout</a></li>
       </ul>
     </div>
     <!-- /.sidebar --> 
   </aside>
 </div></div>
+  <div class="content-wrapper"> 
+
+    <div class="content-header sty-one">
 {% endblock %}
 
 {% block body %}  {% endblock %}
 
 {% block footer %}
-
- <footer class="main-footer col-lg-12" style='width:100%; text-align:center'>
+</div></div>
+ <footer class="main-footer col-lg-12" style='width:100%; text-align:center; margin-top:50px'>
     <div class="pull-right hidden-xs">activity manager</div>
     Copyright © 2023 <a href='cypress.com' target='_blank'>Cypress Soft</a>. All rights reserved.
 </footer>
@@ -215,4 +219,5 @@
     } );
 } );
 </script>
+</body
 {% endblock %}

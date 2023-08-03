@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {# ... #}
-
+<div style="margin: auto">
 {% block body %}
     {% if error %}
         <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -19,4 +19,5 @@
 
         <button type="submit">login</button>
     </form>
+</div>
 {% endblock %}
