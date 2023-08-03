@@ -1,0 +1,160 @@
+{% extends 'base_activity.html.twig' %}
+
+{% block body %}
+   <div class="content-wrapper"> 
+     <h2>Global activities</h2>
+    <div class="content-header sty-one">
+    <div class="container" style="position:absolute; top:20px">
+    <div class='row'>
+    {% for item in general_activities %}
+        <div class='col-lg-3' style="height:280px; border:1px solid lightgrey; overflow:auto; border-radius:5px; margin-left:10px; padding:5px; width:350px; margin-top:20px">
+            <p><img src="{{asset(item.image_path)}}" style="height:150px; width:100%"> 
+            <p>{{ item.title }}</p>
+            <p> {{ item.description }} </p>
+            <button class="btn btn-info">{{ item.date }}</button> <button onclick="getActivity(this.id)" class="btn btn-warning" data-toggle="modal" data-target="#myModal" id="{{ item.id }}_0">Edit Activity</button> <button class="btn btn-danger" id="{{ item.id }}_0" onclick="deleteActivity(this.id)">Delete Activity</button>
+        </div>  
+    {% endfor %}
+        
+    </div>
+         <div class='' style="margin-top:40px">
+        <h2>User Specific activities</h2>
+        <div class='row' >
+        
+    {% for item in user_activities %}
+        <div class='col-lg-3' style="height:280px; border:1px solid lightgrey; overflow:auto; border-radius:5px; margin-left:10px; padding:5px; width:350px; margin-top:20px">
+        <p><img src="{{asset(item.image_path)}}" style="height:150px; width:100%">
+            <p>{{ item.title }}  (<span class="text-info btn btn-light">{{ item.name }}</span>)</p>
+            <p> {{ item.description }} </p>
+            <button class="btn btn-info">{{ item.date }}</button> <button onclick="getActivity(this.id)" class="btn btn-warning" data-toggle="modal" data-target="#myModal" id="{{ item.id }}_1">Edit Activity</button> <button class="btn btn-danger" id="{{ item.id }}_1" onclick="deleteActivity(this.id)">Delete Activity</button>
+        </div>  
+    {% endfor %}
+    </div> 
+    </div>
+    </div>
+    </div>
+    </div>
+
+    <div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title" id="modal-title"></h4>
+      </div>
+      <div class="modal-body">
+      <form action="{{ path('edit_activity') }}" method="post" class="container
+" style="padding:10px" >
+    <div class="form-group">
+
+      <input type="text" class="form-control" id="title" name="title" placeholder="title">
+    </div>
+         <div class="form-group">
+        
+        <input type="date" class="form-control" id="date" onchange="checkCount(this.value)" name="date" placeholder="date">
+      </div>
+      <input type="hidden" name="type" id="type"/>
+      <div class="form-group">
+      
+       
+        <select aria-placeholder="select users" name="created_for" id="created_for" class="form-control">
+            <option value="0">All</option>
+            {% for user in users %}
+            <option value='{{user.id}}'>{{user.name}}</option>
+            {% endfor %}
+        </select>
+        <input type="hidden" id="created_for_"/>
+        
+
+      </div>
+      <input type="hidden" id="activity_id" name="activity_id"/>
+      <div class="form-group">
+            <textarea class="form-control" name="description" id="description" cols="5" rows="5"></textarea>
+      </div>
+       <div class="d-block text-right card-footer">
+      <span id="meter"></span>
+<button class="btn btn-info" id="submit">Edit Activity</button>
+</form>
+</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+<script>
+    function getActivity(obj_id){
+        let obj_ = obj_id.split('_');
+        let id = obj_[0];
+        let type=obj_[1]
+        var obj = new XMLHttpRequest();
+        obj.open("GET", "{{ path('get_activity') }}?id="+id+"&type="+type, true);
+        obj.send(null);
+        obj.onreadystatechange = function() {
+            if(obj.readyState == 4){
+                let data = JSON.parse(this.responseText)
+                console.log(data);
+             
+                document.querySelector("#modal-title").innerHTML = data.title
+                document.querySelector("#title").value = data.title;
+                document.querySelector("#description").value = data.description
+                document.querySelector("#date").value = data.date;
+                document.querySelector("#activity_id").value = data.id;
+                document.querySelector("#type").value = type;
+                  if (parseInt(data.created_for) > 0){
+                  document.querySelector("#created_for").style.display = "none";
+                  document.querySelector("#created_for").value = data.created_for;
+                  
+               }
+                
+            }
+        }
+    }
+
+    function checkCount(val){
+
+    document.querySelector("#submit").disabled = true;
+    var obj = new XMLHttpRequest();
+    let url = "{{ path('count_activity') }}?date="+val
+    
+        obj.open("GET", url, true);
+        obj.send(null);
+        obj.onreadystatechange = function() {
+            if(obj.readyState == 4){
+                let data = JSON.parse(this.responseText)
+                console.log(data.total)
+                if (data.total >= 4){
+                  alert("you've reached the maximum activities for " + val);
+                  document.querySelector("#submit").disabled = true;
+                }else{
+                  document.querySelector("#meter").innerHTML =  `${data.total} activities have been created for ${val}`;
+                  document.querySelector("#submit").disabled = false;
+                }
+                
+            }
+        }
+}
+
+
+function deleteActivity(value){
+  let obj_ = value.split('_');
+  let id = obj_[0];
+  let type = obj_[1]
+     var obj = new XMLHttpRequest();
+        obj.open("GET", "{{ path('delete_activity') }}?id="+id+"&type="+type, true);
+        obj.send(null);
+        obj.onreadystatechange = function() {
+            if(obj.readyState == 4){
+                let data = JSON.parse(this.responseText)
+                console.log(data)
+                alert(data.message);
+                location.reload();         
+            }
+        }
+}
+</script>
+{% endblock %}

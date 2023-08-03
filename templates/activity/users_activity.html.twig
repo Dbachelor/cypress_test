@@ -1,0 +1,121 @@
+{% extends 'base_activity.html.twig' %}
+
+{% block body %}
+      <div class="content-wrapper"> 
+     <div>
+      {% for message in app.flashes('message') %}
+        <div class="flash-notice">
+            {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+    <div class="content-header sty-one">
+    <div class="container" style="position:absolute; top:20px">
+    <div class='row'>
+    {% for item in activities %}
+        <div class='col-lg-3' style="height:280px; border:1px solid lightgrey; overflow:auto; border-radius:5px; margin-left:10px; padding:5px; width:300px; margin-top:20px">
+            <p>{{ item.title }}</p>
+            <p> {{ item.description }} </p>
+            <button class="btn btn-info">{{ item.date }}</button> &nbsp <button onclick="getActivity(this.id)" class="btn btn-warning" data-toggle="modal" data-target="#myModal" id="{{ item.id }}">Edit Activity</button>
+
+        </div>  
+    {% endfor %}
+        
+    </div>
+    </div>
+    </div>
+    </div>
+
+    <div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title" id="modal-title"></h4>
+      </div>
+      <div class="modal-body">
+      <form action="{{ path('edit_user_activity') }}" method="post" class="container
+" style="padding:10px" >
+    <div class="form-group">
+
+      <input type="text" class="form-control" id="title" name="title" placeholder="title">
+    </div>
+         <div class="form-group">
+        
+        <input type="date" class="form-control" onchange="checkCount(this.value)" id="date" name="date" placeholder="date">
+      </div>
+      <div class="form-group">
+        
+        {# <select aria-placeholder="select users" name="created_for" class="form-control">
+            <option value="0">All</option>
+            {% for user in users %}
+            <option value='{{user.id}}'>{{user.name}}</option>
+            {% endfor %}
+        </select> #}
+        <input type="hidden" name="created_for" id="created_for" />
+        <input type="hidden" name="id" id="id" />
+      </div>
+      <div class="form-group">
+            <textarea class="form-control" name="description" id="description" cols="5" rows="5"></textarea>
+      </div>
+      <div class="d-block text-right card-footer">
+      <span id="meter"></span>
+<button class="btn btn-info" id="submit">Edit Activity</button>
+</form>
+</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+<script>
+    function getActivity(id){
+        var obj = new XMLHttpRequest();
+        obj.open("GET", "{{ path('get_users_activity') }}?id="+id, true);
+        obj.send(null);
+        obj.onreadystatechange = function() {
+            if(obj.readyState == 4){
+                let data = JSON.parse(this.responseText)
+                console.log(data)
+                document.querySelector("#modal-title").innerHTML = data.title
+                document.querySelector("#title").value = data.title;
+                document.querySelector("#created_for").value = data.created_for
+                document.querySelector("#description").value = data.description
+                document.querySelector("#date").value = data.date;
+                document.querySelector("#id").value = data.id;
+                
+            }
+        }
+    }
+
+    function checkCount(val){
+
+    document.querySelector("#submit").disabled = true;
+    var obj = new XMLHttpRequest();
+    let url = "{{ path('count_activity') }}?date="+val
+    
+        obj.open("GET", url, true);
+        obj.send(null);
+        obj.onreadystatechange = function() {
+            if(obj.readyState == 4){
+                let data = JSON.parse(this.responseText)
+                console.log(data.total)
+                if (data.total >= 4){
+                  alert("you've reached the maximum activities for " + val);
+                  document.querySelector("#submit").disabled = true;
+                }else{
+                  document.querySelector("#meter").innerHTML =  `${data.total} activities have been created for ${val}`;
+                  document.querySelector("#submit").disabled = false;
+                }
+                
+            }
+        }
+}
+</script>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'base_activity.html.twig' %}
+{% block body %}
+
+<div class="content-wrapper"> 
+
+<div class="content-header sty-one">
+<div class="card-body">
+<div id="example_wrapper" class="dataTables_wrapper dt-bootstrap4"><div style="display: none" class="row"><div class="col-sm-12 col-md-6"><div class="dataTables_length" id="example_length"><label>Show <select name="example_length" aria-controls="example" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div></div><div class="col-sm-12 col-md-6"><div id="example_filter" class="dataTables_filter"><label>Search:<input type="search" class="form-control form-control-sm" placeholder="" aria-controls="example"></label></div></div></div><div class="row"><div class="col-sm-12">
+    <table style="width: 100%;" id="example" class="table table-hover table-striped table-bordered dataTable dtr-inline" role="grid" aria-describedby="example_info">
+<thead>
+<tr role="row"><th class="sorting_asc" tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width: 171.4px;" aria-sort="ascending" aria-label="Name: activate to sort column descending">Name</th>
+<th class="sorting" tabindex="1" aria-controls="example" rowspan="1" colspan="1" style="width: 266.4px;" aria-label="Position: activate to sort column ascending">Email</th>
+<th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width: 123.4px;" aria-label="Office: activate to sort column ascending">Role</th>
+{# <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width: 65.4px;" aria-label="Age: activate to sort column ascending">Date Created</th> #}
+{# <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width: 127.4px;" aria-label="Start date: activate to sort column ascending">Activities</th> #}
+<th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width: 96.2px;" aria-label="Salary: activate to sort column ascending">Action</th></tr>
+</thead>
+<tbody>
+
+{% for user in users %}
+<tr role="row" class="odd">
+<td class="sorting_1 dtr-control">{{ user.name }}</td>
+<td>{{ user.email }}</td>
+<td>user</td>
+{# <td>{{ user.date_created }}</td> #}
+
+<td><a class="btn btn-warning" href="{{ path('user_activity', {id: user.id}) }}">view Activities</a></td>
+</tr>>
+{% endfor %}
+</tbody>
+<tfoot>
+<tr><th rowspan="1" colspan="1">Name</th>
+<th rowspan="1" colspan="1">Email</th>
+{# ><th rowspan="1" colspan="1">Role</th>
+<th rowspan="1" colspan="1">Date created</th> #}
+<th rowspan="1" colspan="1">Activities</th></tr>
+</tfoot>
+</table></div></div><div class="row" style="display: none;"><div class="col-sm-12 col-md-5"><div class="dataTables_info" id="example_info" role="status" aria-live="polite">Showing 1 to 10 of 57 entries</div></div><div class="col-sm-12 col-md-7"><div class="dataTables_paginate paging_simple_numbers" id="example_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="example_previous"><a href="https://demo.dashboardpack.com/architectui-html-pro/#" aria-controls="example" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="https://demo.dashboardpack.com/architectui-html-pro/#" aria-controls="example" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item "><a href="https://demo.dashboardpack.com/architectui-html-pro/#" aria-controls="example" data-dt-idx="2" tabindex="0" class="page-link">2</a></li><li class="paginate_button page-item "><a href="https://demo.dashboardpack.com/architectui-html-pro/#" aria-controls="example" data-dt-idx="3" tabindex="0" class="page-link">3</a></li><li class="paginate_button page-item "><a href="https://demo.dashboardpack.com/architectui-html-pro/#" aria-controls="example" data-dt-idx="4" tabindex="0" class="page-link">4</a></li><li class="paginate_button page-item "><a href="https://demo.dashboardpack.com/architectui-html-pro/#" aria-controls="example" data-dt-idx="5" tabindex="0" class="page-link">5</a></li><li class="paginate_button page-item "><a href="https://demo.dashboardpack.com/architectui-html-pro/#" aria-controls="example" data-dt-idx="6" tabindex="0" class="page-link">6</a></li><li class="paginate_button page-item next" id="example_next"><a href="https://demo.dashboardpack.com/architectui-html-pro/#" aria-controls="example" data-dt-idx="7" tabindex="0" class="page-link">Next</a></li></ul></div></div></div></div>
+</div>
+</div>
+</div>
+</div>
+
+{% endblock %}
