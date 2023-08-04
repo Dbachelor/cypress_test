@@ -22,9 +22,9 @@ class JWTAuth{
     public static function getHeaderToken(){
        $headers = getallheaders();
     
-       if(isset($headers['Authorization'])){
-        $token = explode(' ', $headers['Authorization'])[1];
-        return trim($token[1]);
+       if(isset($headers['Body'])){
+        //$token = explode(' ', $headers['Authorization'])[1];
+        return $headers['Body'];
        }else{
         return null;
        }

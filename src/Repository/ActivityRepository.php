@@ -63,8 +63,12 @@ class ActivityRepository extends ServiceEntityRepository
 
       public function fetchAllUserActivitiesWithinRange($user_id, $date_range){
         $em = $this->getEntityManager()->getConnection();
-        $user_activities = $em->prepare("SELECT * FROM activity WHERE created_for = 0 OR created_for = :user AND date BETWEEN :from AND :to")->executeQuery(["user"=>$user_id, 'from'=>$date_range[0], 'to'=>$date_range[1]])->fetchAllAssociative();
-        return $user_activities;
+        $activities = $em->prepare("SELECT t1.*
+        FROM activity t1
+        LEFT JOIN user_activity t2 ON t2.activity_id = t1.id
+        WHERE t2.activity_id IS NULL")->executeQuery()->fetchAllAssociative();
+        $user_activities = $em->prepare("SELECT user_activity.*, user.name as name FROM `user_activity` LEFT JOIN user ON user_activity.created_for = user.id WHERE created_for=:user_id")->executeQuery(["user_id"=>$user_id])->fetchAllAssociative();
+        return array_merge($activities, $user_activities);
       }
 
       public function fetchAllActivities(){
