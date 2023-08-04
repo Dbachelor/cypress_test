@@ -101,7 +101,7 @@ class ActivityController extends AbstractController
     public function userActivityInRange(Request $request)
     {
         $authencticate = JWTAuth::validateToken(JWTAuth::getHeaderToken());
-        print_r($authencticate);
+        // print_r($authencticate);
         if (!$authencticate['status'] == true){
             return $this->json(['message'=>'access denied'], 401);
         }
