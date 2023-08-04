@@ -2,13 +2,14 @@
 namespace App\Service\JWTAuth;
 
 use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 use UnexpectedValueException;
 
 class JWTAuth{
 
-    public static function validateToken($JWT, $passphrase, $arr=array('HS256')){
+    public static function validateToken($JWT){
         try {
-            $decoded = JWT::decode($JWT,$passphrase, $arr=null);
+            $decoded = JWT::decode($JWT,new Key('506069hhh', 'HS256'));
             $payload = json_decode(json_encode($decoded),true);
             }catch (UnexpectedValueException $e) {
             $res=array("status"=>false,"Error"=>$e->getMessage());
@@ -19,14 +20,14 @@ class JWTAuth{
 
 
     public static function getHeaderToken(){
-        $headers = null;
-        if (isset($_SERVER['Authorization'])) {
-            $headers = trim($_SERVER["Authorization"]);
-            $token = explode(" ", $headers)[1];
-            return $token;
-        }else{
-            return null;
-        }
+       $headers = getallheaders();
+    
+       if(isset($headers['Authorization'])){
+        $token = explode(' ', $headers['Authorization'])[1];
+        return trim($token[1]);
+       }else{
+        return null;
+       }
         
     }
 }

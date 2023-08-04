@@ -100,11 +100,12 @@ class ActivityController extends AbstractController
     #[Route('/user_activity_range', name: 'get_user_activity', methods:['GET'])]
     public function userActivityInRange(Request $request)
     {
-        $authencticate = JWTAuth::validateToken(JWTAuth::getHeaderToken(), $this->getParameter('passphrase'));
+        $authencticate = JWTAuth::validateToken(JWTAuth::getHeaderToken());
+        print_r($authencticate);
         if (!$authencticate['status'] == true){
             return $this->json(['message'=>'access denied'], 401);
         }
-        $activities = $this->activityRepo->fetchAllUserActivitiesWithinRange($authencticate['id'], [$request->request->get('from'), $request->request->get('to')]);
+        $activities = $this->activityRepo->fetchAllUserActivitiesWithinRange($authencticate['id'], $_GET['from'], $_GET['to']);
         return $this->json($activities, 200);
     }
 

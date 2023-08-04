@@ -44,13 +44,12 @@ class AuthController extends AbstractController
         if (password_verify($request->request->get('password'), $user->getPassword()))
         {
             $payload = array(
-                'iss' => $_SERVER['HOST_NAME'],
-                'exp' => time()+3600, 'name'=> $user->getName(),
-                'email'=>$request->request->get('email'), 'id'=>$user->getId()
+                'iss' => gethostname(),
+                'exp' => time()+3600, 'sub'=>$user->getId()
 
                 ); 
                 try{
-                    $jwt = JWT::encode($payload, $this->getParameter('app.passphrase'),'HS256'); 
+                    $jwt = JWT::encode($payload, '506069hhh','HS256'); 
                     $res=array("success"=>true,"Token"=>$jwt);
                     }catch (UnexpectedValueException $e) {
                     $res=array("status"=>false,"Error"=>$e->getMessage());

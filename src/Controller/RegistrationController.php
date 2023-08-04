@@ -58,7 +58,7 @@ class RegistrationController extends AbstractController
         }
         $users = $entityManager->getRepository(User::class)->findBy(['email'=>$request->request->get('email')]);
         if($users){
-            return $this->json(['message'=>$request->request->get('email'), 'success'=>false], 400);
+            return $this->json(['message'=>$request->request->get('email'). ' already exists', 'success'=>false], 400);
         }
 
         $new_user = $this->userRepo->createUser($request);
